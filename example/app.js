@@ -40,6 +40,17 @@ app.use('/todos', createService({
   }
 }))
 
+app.service("todos").hooks({
+  before: {
+    find(context) {
+      const query = context.service.createQuery(context.params);
+      query.where('complete', true);
+      context.params.objection = query;
+      return context;
+    }
+  }
+});
+
 // Handle Errors
 app.use(errorHandler())
 
